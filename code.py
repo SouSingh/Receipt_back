@@ -70,3 +70,8 @@ async def get_twitter_user_data(username: str):
         "verified": user_data.get("verified", False),
         "url": user_data.get("url", ""),
     }
+
+# Run the app
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host='0.0.0.0', port=8000)
