@@ -1,4 +1,5 @@
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 import httpx
 from pydantic import BaseModel
 import os
@@ -9,6 +10,15 @@ load_dotenv()
 
 # Initialize the FastAPI app
 app = FastAPI()
+
+# Add CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Update to specific origin(s) for production
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Twitter Bearer Token
 TWITTER_BEARER_TOKEN = os.getenv('TWITTER_BEARER_TOKEN')
@@ -70,8 +80,3 @@ async def get_twitter_user_data(username: str):
         "verified": user_data.get("verified", False),
         "url": user_data.get("url", ""),
     }
-
-# Run the app
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, host='0.0.0.0', port=8000)
